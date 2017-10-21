@@ -3,62 +3,14 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
-    <meta http-equiv="content-language" content="fa">
-    <meta name="language" content="fa">
-    <style>
-    body{
-        margin: 0;
-        padding: 0;
-    }
-    #map {
-        height: 100vh;
-        width: 100%;
-        background: gray;
-    }
-    button{
-        position: absolute;
-        bottom: 10px;
-        left: calc(50% - 80px);
-        padding: 12px 24px;
-        background: #5cb85c;
-        border: none;
-        border: 1px solid #4cae4c;
-        color: #FFF;
-        font-size: 18px;
-        border-radius: 4px;
-    }
-    .calculate:hover{
-        cursor: pointer;
-    }
-    #output{
-        position: absolute;
-        background: #00000080;
-        left: 10px;
-        top: 10px;
-        padding: 20px;
-        color: #FFF;
-        font-family: tahoma;
-        line-height: 2
-    }
-    .wait{
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 0;
-        width: 100vw;
-        background: #00000080;
-        color: #FFF;
-        height: 100vh;
-        font-size: 28px;
-    }
-    </style>
+    <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="jquery.min.js"></script>
 </head>
 <body>
     <div id="map"></div>
-    <div style="display: none" id="output"></div>
-    <button style="display: none" class="calculate" type="button" name="button" onclick="distance()">Calculate</button>
-    <div style="display: none" class="wait">WAIT...</div>
+    <div id="output"></div>
+    <button class="calculate" type="button" name="button" onclick="distance()">Calculate</button>
+    <div class="wait">WAIT...</div>
     <script type="text/javascript" src="index.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTpdUDVpmjWPDZZY_JLAE53ITYdZUSdL0&callback=initMap"></script>
 </body>

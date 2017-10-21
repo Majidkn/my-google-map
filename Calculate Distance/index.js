@@ -1,15 +1,10 @@
 var markers = [];
 function initMap() {
-
-
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: {lat: 35.703171, lng: 51.39511600000003},
         disableDefaultUI: true,
         mapTypeControl: false,
-
-
-
     });
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -41,6 +36,7 @@ function initMap() {
     });
 
 }
+
 function distance(){
     $('.wait').css({display: 'flex'});
     var geocoder = new google.maps.Geocoder;
