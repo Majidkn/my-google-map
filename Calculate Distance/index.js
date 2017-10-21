@@ -1,47 +1,46 @@
-var markers = [];
-function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
+let markers = [];
+var initMap = () => {
+    let map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: {lat: 35.703171, lng: 51.39511600000003},
         disableDefaultUI: true,
         mapTypeControl: false,
     });
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
+
+    (navigator.geolocation)?
+        navigator.geolocation.getCurrentPosition(showPosition):
         alert("Geolocation is not supported by this browser.");
-    }
+
     function showPosition(position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
+        let lat = position.coords.latitude;
+        let lng = position.coords.longitude;
         map.setCenter(new google.maps.LatLng(lat, lng));
         map.setZoom(15);
     }
-    google.maps.event.addListener(map, 'click', function(event) {
+    google.maps.event.addListener(map, 'click', (event) => {
         if(markers.length != 2){
-            var marker = new google.maps.Marker({
+            let marker = new google.maps.Marker({
                 position: event.latLng,
                 map: map,
                 draggable: true,
                 icon: "marker.png"
             });
             markers.push(marker);
-            google.maps.event.addListener(marker, 'mouseup', function(event) {
-                var latLng = event.latLng;
+            google.maps.event.addListener(marker, 'mouseup', (event) => {
+                let latLng = event.latLng;
             });
             if(markers.length == 2){
                 $('.calculate').css({display:'block'})
             }
         }
     });
-
 }
 
-function distance(){
+let distance = () => {
     $('.wait').css({display: 'flex'});
-    var geocoder = new google.maps.Geocoder;
-    var service = new google.maps.DistanceMatrixService;
-    var markersArray = [];
+    let geocoder = new google.maps.Geocoder;
+    let service = new google.maps.DistanceMatrixService;
+    let markersArray = [];
 
     service.getDistanceMatrix({
         origins: [{lat: markers[0].position.lat(), lng: markers[0].position.lng()}],
@@ -50,18 +49,18 @@ function distance(){
         unitSystem: google.maps.UnitSystem.METRIC,
         avoidHighways: false,
         avoidTolls: false
-    }, function(response, status) {
+    }, (response, status) => {
         if (status !== 'OK') {
             alert('Error was: ' + status);
         } else {
-            var originList = response.originAddresses;
-            var destinationList = response.destinationAddresses;
-            var outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = '';
+            let originList = response.originAddresses;
+            let destinationList = response.destinationAddresses;
+            let outputDiv = $('.output');
+            outputDiv.html('');
             deleteMarkers(markersArray);
 
-            var showGeocodedAddressOnMap = function() {
-                return function(results, status) {
+            var showGeocodedAddressOnMap = () => {
+                return (results, status) => {
                     if (status === 'OK') {
                         map.fitBounds(bounds.extend(results[0].geometry.location));
                         markersArray.push(new google.maps.Marker({
@@ -74,26 +73,26 @@ function distance(){
                 };
             };
 
-            for (var i = 0; i < originList.length; i++) {
-                var results = response.rows[i].elements;
+            for (let i = 0; i < originList.length; i++) {
+                let results = response.rows[i].elements;
                 geocoder.geocode({'address': originList[i]},
                 showGeocodedAddressOnMap());
-                for (var j = 0; j < results.length; j++) {
+                for (let j = 0; j < results.length; j++) {
                     geocoder.geocode({'address': destinationList[j]},
                     showGeocodedAddressOnMap());
                     $('.wait').css({display: 'none'});
-                    outputDiv.innerHTML += '<div class="origin">From: ' + originList[i] + '</div><div class="destination">To: ' + destinationList[j] +
+                    outputDiv.append('<div class="origin">From: ' + originList[i] + '</div><div class="destination">To: ' + destinationList[j] +
                     '</div><div class="distance">Distance: ' + results[j].distance.text + '</div><div class="duration">Duration :' +
-                    results[j].duration.text + '</div>';
+                    results[j].duration.text + '</div>');
                 }
-                $('#output').css({display:'block'})
+                $('.output').css({display:'block'})
             }
         }
     });
 }
-function deleteMarkers(markersArray) {
-    for (var i = 0; i < markersArray.length; i++) {
-        markersArray[i].setMap(null);
+let deleteMarkers = (markersArray) => {
+    for (let marker of markersArray){
+        marker.setMap(null);
     }
     markersArray = [];
 }

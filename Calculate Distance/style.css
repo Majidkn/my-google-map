@@ -22,7 +22,7 @@ body{
 .calculate:hover{
     cursor: pointer;
 }
-#output{
+.output{
     display: none;
     position: absolute;
     background: #00000080;
